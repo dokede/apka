@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominik Wiśniewski</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        /* Tile Navigation Bar */
+        .tile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 0;
+            height: 80px;
+            z-index: 1000;
+        }
+
+        .tile {
+            width: 150px;
+            height: 60px;
+            background-color: #333;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            text-align: center;
+            border-radius: 10px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .tile:hover {
+            transform: scale(1.2);
+            background-color: #ff9800;
+        }
+
+        /* Header */
+        header {
+            padding-top: 80px;
+            padding-bottom: 40px;
+            background-color: #222;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        header h1 {
+            font-size: 3em;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+        }
+
+        /* Social Icons in Header */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 1.5em;
+            color: #ff9800;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #ffffff;
+        }
+
+        .contact-info {
+            text-align: center;
+            color: #bbbbbb;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .contact-info a {
+            color: #ff9800;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            color: #ffffff;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 60px 20px;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* Carousel Projects */
+        #projects {
+            background-color: #222;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            padding: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+
+        .project {
+            width: 300px;
+            perspective: 1000px;
+            flex: 0 0 auto;
+        }
+
+        .project-card {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+            border-radius: 10px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .project-card:hover {
+            transform: rotateY(180deg);
+        }
+
+        .project-card-front, .project-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        .project-card-front {
+            background-color: #333;
+        }
+
+        .project-card-back {
+            background-color: #444;
+            transform: rotateY(180deg);
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Carousel Controls */
+        .carousel-control {
+            font-size: 2em;
+            color: #ff9800;
+            cursor: pointer;
+            user-select: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .carousel-control.left {
+            left: 20px;
+        }
+
+        .carousel-control.right {
+            right: 20px;
+        }
+        
+        section h2 {
+            font-size: 2em;
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+
+        section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        section li {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+        }
+
+        section li p {
+            color: #bbbbbb;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        strong {
+            font-size: 1.2em;
+            color: #ff9800;
+        }
+
+        em {
+            color: #bbbbbb;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        canvas {
+            background-color: black;
+            border: 1px solid white;
+        }
+        /* Kontener dla rysowania i bota, Flexbox dla układu obok siebie */
+        .drawing-container {
+            display: flex;
+            gap: 20px; /* Przestrzeń pomiędzy sekcjami */
+            flex-wrap: space-between; /* Umożliwia przenoszenie na nową linię w przypadku małych ekranów */
+        }
+
+        /* Sekcja rysowania */
+        .drawing-section {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 600px;  /* Stała szerokość */
+            height: 500px; /* Stała wysokość */
+        }
+
+        /* Sekcja bota */
+        .bot-section {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 600px;  /* Stała szerokość */
+            height: 500px; /* Stała wysokość */
+        }
+
+        /* Stylizacja chatboxa */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .chat-messages {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .chat-messages p {
+            margin: 5px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff9800;
+            background-color: #333;
+            color: white;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #ff9800;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e68900;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="tile-nav">
+        <a href="#about" class="tile">Główna</a>
+        <a href="#experience" class="tile">Doświadczenie</a>
+        <a href="#education" class="tile">Wykształcenie</a>
+        <a href="#projects" class="tile">Projekty</a>
+        <a href="#drawing" class="tile">Rysowanie</a>
+    </div>
+
+    <header id="about">
+        <h1>Dominik Wiśniewski</h1>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/dominik-wi%C5%9Bniewski-352528223/" target="_blank" class="fab fa-linkedin"></a>
+            <a href="https://www.facebook.com/profile.php?id=100013833244520" target="_blank" class="fab fa-facebook"></a>
+            <a href="https://www.instagram.com/wisniewski286/" target="_blank" class="fab fa-instagram"></a>
+        </div>
+        <div class="contact-info">
+            <p>Tel: 725080653</p>
+            <p>Email: <a href="mailto:dominik2068@o2.pl">dominik2068@o2.pl</a></p>
+        </div>
+    </header>
+
+    <section id="experience">
+        <h2>Doświadczenie</h2>
+        <ul>
+            <li>
+                <strong>Młodszy Analityk Sprzedaży</strong><br>
+                Cartrack Polska<br>
+                <em>Maj 2023 - Obecnie</em>
+                <p>Odpowiedzialność za analizę danych sprzedażowych</p>
+                <p>Raportowanie cykliczne oraz ad hoc dotyczące stryktury firmy</p>
+                <p>Automatyzacja zadań</p>
+                <p>Wykorzystywane narzędzia: Excel, Postgres, Sisense, VBA</p>
+            </li>
+            <li>
+                <strong>Młodszy Specjalista ds. Analizy Danych Retencyjnych</strong><br>
+                Warta<br>
+                <em>Luty 2023 - Kwiecień 2023</em>
+                <p>Raportowanie cykliczne wyników monitów</p>
+                <p>Przygotowywanie prezentacji podsumowujących wnioski</p>
+                <p>Wykorzystywane narzędzia: Excel, VBA, Power Point</p>
+            </li>
+        </ul>
+    </section>
+
+    <section id="education">
+        <h2>Wykształcenie</h2>
+        <p>
+            <strong>Studia Inżynierskie</strong><br>
+            Uniwersytet Łódzki<br>
+            Kierunek: Analiza danych<br>
+            <em>2020 - 2024</em>
+        </p>
+    </section>
+
+    <section id="projects">
+        <h2>Projekty</h2>
+        <div id="projects-carousel">
+            <div class="carousel-container">
+                <div class="project">
+                    <div class="project-card">
+                        <div class="project-card-front">
+                            <h3>Wpływ doświadczenia na wynagrodzenie</h3>
+                        </div>
+                        <div class="project-card-back">
+                            <p><a href="https://gist.github.com/dokede/53746ad0f8ed6db6333e8566d8c3c0b5" target="_blank" style="text-decoration: none; color: inherit;">Za pomocą regresji liniowej wyznaczono prostą, która predykuje wynagrodzenie pracownika sugerując się doświadczeniem w latach</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project">
+                    <div class="project-card">
+                        <div class="project-card-front">
+                            <h3>ML w predykcji odejść klientów</h3>
+                        </div>
+                        <div class="project-card-back">
+                            <p>Zastosowanie metod ML do predykcji odejść klientów z sektora bankowego, porównanie modeli oraz ich ewaluacja</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project">
+                    <div class="project-card">
+                        <div class="project-card-front">
+                            <h3>Projekt 3</h3>
+                        </div>
+                        <div class="project-card-back">
+                            <p>W trakcie budowy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-control left" onclick="moveCarousel(-1)">&#10094;</div>
+            <div class="carousel-control right" onclick="moveCarousel(1)">&#10095;</div>
+        </div>
+    </section>
+
+    <section id="drawing">
+        <div class="drawing-container">
+            <!-- Sekcja Rysowania -->
+            <div class="drawing-section">
+                <h1>Narysuj cyfrę</h1>
+                <canvas id="drawingCanvas" width="280" height="280"></canvas>
+                <br>
+                <button id="submitBtn">Przekaż</button>
+                <button id="clearBtn">Wyczyść</button>
+                <h2>Wynik Predykcji: <span id="predictionResult"></span></h2>
+                <h2>Pewność: <span id="confidenceResult">%</span></h2>
+            </div>
+            
+            <!-- Sekcja Bota -->
+            <div class="bot-section">
+                <h1>Zapytaj o mnie bota</h1>
+                <div id="chatBox" class="chat-box">
+                    <div id="chatMessages" class="chat-messages"></div>
+                    <input type="text" id="userInput" placeholder="zaptaj o doświadczenie, kontakt, wykształcenie" />
+                    <button id="sendBtn">Wyślij</button>
+                </div>
+            </div>
+        </div>
+    </section>    
+    
+
+    <script>
+        // Drawing functionality
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+    
+        // Normalize mouse coordinates
+        function getMousePos(canvas, event) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+        }
+    
+        canvas.addEventListener('mousedown', () => {
+            drawing = true;
+            ctx.beginPath();
+        });
+    
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+            ctx.closePath();
+        });
+    
+        canvas.addEventListener('mousemove', (event) => {
+            if (drawing) {
+                const pos = getMousePos(canvas, event);
+                ctx.lineWidth = 13;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = 'white';
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                ctx.moveTo(pos.x, pos.y); // Move to the new position
+            }
+        });
+    
+        // Submit drawing to prediction endpoint
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const imageData = canvas.toDataURL('image/png');
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Błąd w odpowiedzi:', errorData.error);
+                alert('Wystąpił błąd: ' + errorData.error);
+                return;
+            }
+    
+            const result = await response.json();
+            document.getElementById('predictionResult').innerText = result.prediction;
+            document.getElementById('confidenceResult').innerText = result.confidence.toFixed(0)+ '%' ;
+        });
+    
+        // Clear canvas and results
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('predictionResult').innerText = '';
+            document.getElementById('confidenceResult').innerText = '';
+        });
+    
+        // Carousel functionality
+        let currentIndex = 0;
+    
+        function moveCarousel(direction) {
+            const projects = document.querySelectorAll('.project');
+            const totalProjects = projects.length;
+            currentIndex = (currentIndex + direction + totalProjects) % totalProjects;
+            const offset = -currentIndex * (projects[0].clientWidth + 20); // Adjusted for gap
+    
+            const carouselContainer = document.querySelector('.carousel-container');
+            carouselContainer.style.transform = `translateX(${offset}px)`;
+        }
+    
+        // Bot functionality
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const userMessage = document.getElementById('userInput').value.trim();
+            
+            if (!userMessage) {
+                alert("Proszę wpisać wiadomość.");
+                return;
+            }
+
+            // Show user's message in chat
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML += `<div><strong>Ty:</strong> ${userMessage}</div>`;
+            document.getElementById('userInput').value = ''; // Clear input field
+
+            // Send message to bot
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Błąd w odpowiedzi:', errorData.error);
+                alert('Wystąpił błąd: ' + errorData.error);
+                return;
+            }
+
+            // Display bot's response
+            const botResponse = await response.json();
+            chatMessages.innerHTML += `<div><strong>Bot:</strong> ${botResponse.response}</div>`;
+            
+            // Scroll to the bottom of chat
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    </script>
+    
+    
+</body>
+</html>
