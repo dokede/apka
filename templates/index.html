@@ -1,347 +1,174 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dominik Wiśniewski</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominik Wiśniewski</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    background-color: #121212;
+    color: #ffffff;
+    scroll-behavior: smooth;
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            scroll-behavior: smooth;
-        }
+/* -------------------- Sekcja główna (#about) -------------------- */
+#about {
+    padding: 20px;
+    background-color: #222;
+    border-bottom: 2px solid #ff9800;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 600px;
+    margin: 40px auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
 
-        /* Tile Navigation Bar */
-        .tile-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #222;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px 0;
-            height: 80px;
-            z-index: 1000;
-        }
+#about h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
 
-        .tile {
-            width: 150px;
-            height: 60px;
-            background-color: #333;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            text-align: center;
-            border-radius: 10px;
-            transition: transform 0.3s, background-color 0.3s;
-            cursor: pointer;
-            text-decoration: none;
-        }
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 8px;
+}
 
-        .tile:hover {
-            transform: scale(1.2);
-            background-color: #ff9800;
-        }
+.social-icons a {
+    font-size: 1.5em;
+    color: #ff9800;
+    transition: color 0.3s;
+}
+.social-icons a:hover { color: #ffffff; }
 
-        /* Header */
-        header {
-            padding-top: 80px;
-            padding-bottom: 40px;
-            background-color: #222;
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #ff9800;
-        }
+.contact-info {
+    color: #bbbbbb;
+    font-size: 0.95em;
+    text-align: center;
+}
+.contact-info a {
+    color: #ff9800;
+    text-decoration: none;
+}
+.contact-info a:hover { color: #ffffff; }
 
-        header h1 {
-            font-size: 3em;
-            display: inline-block;
-            vertical-align: middle;
-            margin: 0;
-        }
+/* -------------------- Sekcje obok siebie -------------------- */
+.sections-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch; /* WAŻNE: wyrównanie wysokości sekcji */
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
 
-        /* Social Icons in Header */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
+.sections-container > section {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    border-bottom: 2px solid #ff9800;
+    flex: 1 1 300px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* wypełnia równą wysokość w rzędzie */
+}
 
-        .social-icons a {
-            font-size: 1.5em;
-            color: #ff9800;
-            transition: color 0.3s;
-        }
+section h2 {
+    font-size: 1.8em;
+    color: #ff9800;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+}
 
-        .social-icons a:hover {
-            color: #ffffff;
-        }
+section ul { list-style: none; padding: 0; width: 100%; }
+section li {
+    margin-bottom: 15px;
+    padding: 8px 10px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+section li p { color: #bbbbbb; font-size: 0.85em; margin-top: 3px; }
 
-        .contact-info {
-            text-align: center;
-            color: #bbbbbb;
-            margin-top: 10px;
-            font-size: 1em;
-        }
+section#education p {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
 
-        .contact-info a {
-            color: #ff9800;
-            text-decoration: none;
-        }
+strong { font-size: 1.2em; color: #ff9800; }
+em { color: #bbbbbb; font-style: italic; font-size: 0.9em; }
 
-        .contact-info a:hover {
-            color: #ffffff;
-        }
+/* -------------------- Canvas i drawing section -------------------- */
+canvas { background-color: black; border: 1px solid white; }
+.drawing-container { display: flex; gap: 20px; flex-wrap: wrap; }
+.drawing-section {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+}
+button {
+    padding: 10px;
+    background-color: #ff9800;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    margin: 5px;
+}
+button:hover { background-color: #e68900; }
 
-        /* Section Styling */
-        section {
-            padding: 60px 20px;
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            border-bottom: 2px solid #ff9800;
-        }
-
-        section:last-of-type {
-            border-bottom: none;
-        }
-
-        /* Carousel Projects */
-        #projects {
-            background-color: #222;
-            width: 100%;
-            max-width: 100%;
-            overflow: hidden;
-            padding: 40px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .carousel-container {
-            display: flex;
-            transition: transform 0.5s ease;
-            gap: 20px;
-        }
-
-        .project {
-            width: 300px;
-            perspective: 1000px;
-            flex: 0 0 auto;
-        }
-
-        .project-card {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background-color: #333;
-            border-radius: 10px;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-
-        .project-card:hover {
-            transform: rotateY(180deg);
-        }
-
-        .project-card-front, .project-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            border-radius: 10px;
-            font-size: 1.1em;
-        }
-
-        .project-card-front {
-            background-color: #333;
-        }
-
-        .project-card-back {
-            background-color: #444;
-            transform: rotateY(180deg);
-            padding: 10px;
-            text-align: center;
-        }
-
-        /* Carousel Controls */
-        .carousel-control {
-            font-size: 2em;
-            color: #ff9800;
-            cursor: pointer;
-            user-select: none;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 10px;
-            z-index: 10;
-        }
-
-        .carousel-control.left {
-            left: 20px;
-        }
-
-        .carousel-control.right {
-            right: 20px;
-        }
-        
-        section h2 {
-            font-size: 2em;
-            color: #ff9800;
-            margin-bottom: 20px;
-        }
-
-        section ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        section li {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #1e1e1e;
-            border-radius: 8px;
-        }
-
-        section li p {
-            color: #bbbbbb;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        strong {
-            font-size: 1.2em;
-            color: #ff9800;
-        }
-
-        em {
-            color: #bbbbbb;
-            font-style: italic;
-            font-size: 0.9em;
-        }
-
-        canvas {
-            background-color: black;
-            border: 1px solid white;
-        }
-        /* Kontener dla rysowania i bota, Flexbox dla układu obok siebie */
-        .drawing-container {
-            display: flex;
-            gap: 20px; /* Przestrzeń pomiędzy sekcjami */
-            flex-wrap: space-between; /* Umożliwia przenoszenie na nową linię w przypadku małych ekranów */
-        }
-
-        /* Sekcja rysowania */
-        .drawing-section {
-            background-color: #222;
-            padding: 20px;
-            border-radius: 10px;
-            width: 600px;  /* Stała szerokość */
-            height: 500px; /* Stała wysokość */
-        }
-
-        /* Sekcja bota */
-        .bot-section {
-            background-color: #222;
-            padding: 20px;
-            border-radius: 10px;
-            width: 600px;  /* Stała szerokość */
-            height: 500px; /* Stała wysokość */
-        }
-
-        /* Stylizacja chatboxa */
-        .chat-box {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .chat-messages {
-            width: 100%;
-            max-height: 300px;
-            overflow-y: auto;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 10px;
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .chat-messages p {
-            margin: 5px 0;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ff9800;
-            background-color: #333;
-            color: white;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #ff9800;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #e68900;
-        }
-        
-
-    </style>
+/* -------------------- Responsywność -------------------- */
+@media(max-width:1200px){
+    .sections-container { flex-direction: column; align-items: center; }
+    .sections-container > section { width: 90%; }
+    #about { width: 90%; }
+}
+@media(max-width:700px){
+    .drawing-section { width: 95%; padding: 15px; }
+    canvas { width: 90%; height: auto; }
+}
+</style>
 </head>
-<body>
-    <div class="tile-nav">
-        <a href="#about" class="tile">Główna</a>
-        <a href="#experience" class="tile">Doświadczenie</a>
-        <a href="#education" class="tile">Wykształcenie</a>
-        <a href="#projects" class="tile">Projekty</a>
-        <a href="#drawing" class="tile">Rysowanie</a>
-    </div>
 
-    <header id="about">
-        <h1>Dominik Wiśniewski</h1>
-        <div class="social-icons">
-            <a href="https://www.linkedin.com/in/dominik-wi%C5%9Bniewski-352528223/" target="_blank" class="fab fa-linkedin"></a>
-            <a href="https://www.facebook.com/profile.php?id=100013833244520" target="_blank" class="fab fa-facebook"></a>
-            <a href="https://www.instagram.com/wisniewski286/" target="_blank" class="fab fa-instagram"></a>
-        </div>
-        <div class="contact-info">
-            <p>Tel: 725080653</p>
-            <p>Email: <a href="mailto:dominik2068@o2.pl">dominik2068@o2.pl</a></p>
-        </div>
-    </header>
+<body>
+
+<section id="about">
+    <h1>Dominik Wiśniewski</h1>
+    <div class="social-icons">
+        <a href="https://www.linkedin.com/in/dominik-wi%C5%9Bniewski-352528223/" target="_blank" class="fab fa-linkedin"></a>
+        <a href="https://www.facebook.com/profile.php?id=100013833244520" target="_blank" class="fab fa-facebook"></a>
+        <a href="https://www.instagram.com/wisniewski286/" target="_blank" class="fab fa-instagram"></a>
+    </div>
+    <div class="contact-info">
+        <p>Tel: 725080653</p>
+        <p>Email: <a href="mailto:dominik2068@o2.pl">dominik2068@o2.pl</a></p>
+    </div>
+</section>
+
+<div class="sections-container">
 
     <section id="experience">
         <h2>Doświadczenie</h2>
@@ -374,203 +201,40 @@
             Kierunek: Analiza danych<br>
             <em>2020 - 2024</em>
         </p>
-    
-        <br> <!-- Dodanie przerwy między paragrafami -->
-        <br> <!-- Dodanie przerwy między paragrafami -->
-
         <p>
             <strong>Studia Magisterskie</strong><br>
-            Uniwersytet Łódzki<br>
-            Kierunek: Analiza danych<br>
+            Akademia Humanistyczno Ekonomiczna<br>
+            Kierunek: Informatyka<br>
             <em>2025 - obecnie</em>
         </p>
     </section>
 
-    <section id="projects">
-        <h2>Projekty</h2>
-        <div id="projects-carousel">
-            <div class="carousel-container">
-                <div class="project">
-                    <div class="project-card">
-                        <div class="project-card-front">
-                            <h3>Wpływ doświadczenia na wynagrodzenie</h3>
-                        </div>
-                        <div class="project-card-back">
-                            <p><a href="https://gist.github.com/dokede/53746ad0f8ed6db6333e8566d8c3c0b5" target="_blank" style="text-decoration: none; color: inherit;">Za pomocą regresji liniowej wyznaczono prostą, która predykuje wynagrodzenie pracownika sugerując się doświadczeniem w latach</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="project">
-                    <div class="project-card">
-                        <div class="project-card-front">
-                            <h3>ML w predykcji odejść klientów</h3>
-                        </div>
-                        <div class="project-card-back">
-                            <p>Zastosowanie metod ML do predykcji odejść klientów z sektora bankowego, porównanie modeli oraz ich ewaluacja</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="project">
-                    <div class="project-card">
-                        <div class="project-card-front">
-                            <h3>Projekt 3</h3>
-                        </div>
-                        <div class="project-card-back">
-                            <p>W trakcie budowy</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-control left" onclick="moveCarousel(-1)">&#10094;</div>
-            <div class="carousel-control right" onclick="moveCarousel(1)">&#10095;</div>
-        </div>
-    </section>
-
     <section id="drawing">
+        <h2>Rysowanie</h2>
         <div class="drawing-container">
-            <!-- Sekcja Rysowania -->
             <div class="drawing-section">
-                <h1>Narysuj cyfrę</h1>
                 <canvas id="drawingCanvas" width="280" height="280"></canvas>
-                <br>
                 <button id="submitBtn">Przekaż</button>
                 <button id="clearBtn">Wyczyść</button>
                 <h2>Wynik Predykcji: <span id="predictionResult"></span></h2>
                 <h2>Pewność: <span id="confidenceResult">%</span></h2>
             </div>
-            
-            <!-- Sekcja Bota -->
-            <div class="bot-section">
-                <h1>Zapytaj o mnie bota</h1>
-                <div id="chatBox" class="chat-box">
-                    <div id="chatMessages" class="chat-messages"></div>
-                    <input type="text" id="userInput" placeholder="zaptaj o doświadczenie, kontakt, wykształcenie" />
-                    <button id="sendBtn">Wyślij</button>
-                </div>
-            </div>
         </div>
-    </section>    
-    
+    </section>
 
-    <script>
-        // Drawing functionality
-        const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-    
-        // Normalize mouse coordinates
-        function getMousePos(canvas, event) {
-            const rect = canvas.getBoundingClientRect();
-            return {
-                x: event.clientX - rect.left,
-                y: event.clientY - rect.top
-            };
-        }
-    
-        canvas.addEventListener('mousedown', () => {
-            drawing = true;
-            ctx.beginPath();
-        });
-    
-        canvas.addEventListener('mouseup', () => {
-            drawing = false;
-            ctx.closePath();
-        });
-    
-        canvas.addEventListener('mousemove', (event) => {
-            if (drawing) {
-                const pos = getMousePos(canvas, event);
-                ctx.lineWidth = 13;
-                ctx.lineCap = 'round';
-                ctx.strokeStyle = 'white';
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-                ctx.moveTo(pos.x, pos.y); // Move to the new position
-            }
-        });
-    
-        // Submit drawing to prediction endpoint
-        document.getElementById('submitBtn').addEventListener('click', async () => {
-            const imageData = canvas.toDataURL('image/png');
-            const response = await fetch('/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ image: imageData })
-            });
-    
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Błąd w odpowiedzi:', errorData.error);
-                alert('Wystąpił błąd: ' + errorData.error);
-                return;
-            }
-    
-            const result = await response.json();
-            document.getElementById('predictionResult').innerText = result.prediction;
-            document.getElementById('confidenceResult').innerText = result.confidence.toFixed(0)+ '%' ;
-        });
-    
-        // Clear canvas and results
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('predictionResult').innerText = '';
-            document.getElementById('confidenceResult').innerText = '';
-        });
-    
-        // Carousel functionality
-        let currentIndex = 0;
-    
-        function moveCarousel(direction) {
-            const projects = document.querySelectorAll('.project');
-            const totalProjects = projects.length;
-            currentIndex = (currentIndex + direction + totalProjects) % totalProjects;
-            const offset = -currentIndex * (projects[0].clientWidth + 20); // Adjusted for gap
-    
-            const carouselContainer = document.querySelector('.carousel-container');
-            carouselContainer.style.transform = `translateX(${offset}px)`;
-        }
-    
-        // Bot functionality
-        document.getElementById('sendBtn').addEventListener('click', async () => {
-            const userMessage = document.getElementById('userInput').value.trim();
-            
-            if (!userMessage) {
-                alert("Proszę wpisać wiadomość.");
-                return;
-            }
+</div>
 
-            // Show user's message in chat
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML += `<div><strong>Ty:</strong> ${userMessage}</div>`;
-            document.getElementById('userInput').value = ''; // Clear input field
+<script>
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+function getMousePos(canvas,event){const rect=canvas.getBoundingClientRect();return{x:event.clientX-rect.left,y:event.clientY-rect.top};}
+canvas.addEventListener('mousedown',()=>{drawing=true;ctx.beginPath();});
+canvas.addEventListener('mouseup',()=>{drawing=false;ctx.closePath();});
+canvas.addEventListener('mousemove',(event)=>{if(drawing){const pos=getMousePos(canvas,event);ctx.lineWidth=13;ctx.lineCap='round';ctx.strokeStyle='white';ctx.lineTo(pos.x,pos.y);ctx.stroke();ctx.moveTo(pos.x,pos.y);}});
+document.getElementById('submitBtn').addEventListener('click',async()=>{const imageData=canvas.toDataURL('image/png');const response=await fetch('/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:imageData})});if(!response.ok){const errorData=await response.json();alert('Błąd: '+errorData.error);return;}const result=await response.json();document.getElementById('predictionResult').innerText=result.prediction;document.getElementById('confidenceResult').innerText=result.confidence.toFixed(0)+'%';});
+document.getElementById('clearBtn').addEventListener('click',()=>{ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('predictionResult').innerText='';document.getElementById('confidenceResult').innerText='';});
+</script>
 
-            // Send message to bot
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: userMessage })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Błąd w odpowiedzi:', errorData.error);
-                alert('Wystąpił błąd: ' + errorData.error);
-                return;
-            }
-
-            // Display bot's response
-            const botResponse = await response.json();
-            chatMessages.innerHTML += `<div><strong>Bot:</strong> ${botResponse.response}</div>`;
-            
-            // Scroll to the bottom of chat
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-    </script>
-    
-    
 </body>
 </html>

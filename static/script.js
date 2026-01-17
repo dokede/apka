@@ -1,66 +1,185 @@
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
-let drawing = false;
+/* -------------------- Ogólne ustawienia -------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
 
-// Ustawienia rysowania
-context.lineWidth = 15; // Grubość linii
-context.lineCap = 'round'; // Umożliwia zaokrąglone końce linii
-context.strokeStyle = 'black'; // Kolor linii
+body {
+    background-color: #121212;
+    color: #ffffff;
+    scroll-behavior: smooth;
+}
 
-// Ustawienie tła na białe na początku
-context.fillStyle = 'white';
-context.fillRect(0, 0, canvas.width, canvas.height);
+/* -------------------- Pasek nawigacyjny -------------------- */
+.tile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #222, #333);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
 
-// Rozpoczęcie rysowania
-canvas.addEventListener('mousedown', (event) => {
-    drawing = true;
-    context.beginPath(); // Rozpocznij nową ścieżkę
-    const rect = canvas.getBoundingClientRect();
-    context.moveTo(event.clientX - rect.left, event.clientY - rect.top);
-});
+.tile {
+    padding: 12px 25px;
+    background-color: #444;
+    color: #ffffff;
+    font-size: 1em;
+    text-align: center;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
 
-// Kończenie rysowania
-canvas.addEventListener('mouseup', () => {
-    drawing = false;
-});
+.tile:hover {
+    transform: scale(1.1);
+    background-color: #ff9800;
+    box-shadow: 0 4px 15px rgba(255,152,0,0.6);
+    color: #fff;
+}
 
-// Rysowanie na płótnie
-canvas.addEventListener('mousemove', (event) => {
-    if (!drawing) return;
+.tile.active {
+    background-color: #ff9800;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(255,152,0,0.6);
+}
 
-    const rect = canvas.getBoundingClientRect();
-    context.lineTo(event.clientX - rect.left, event.clientY - rect.top);
-    context.stroke(); // Rysuj linię
-});
+/* -------------------- Sekcje -------------------- */
+section {
+    padding: 60px 20px;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: 2px solid #ff9800;
+}
 
-// Zapisz obrazek po kliknięciu przycisku
-document.getElementById('save').addEventListener('click', () => {
-    const dataURL = canvas.toDataURL('image/png');
+section:last-of-type {
+    border-bottom: none;
+}
 
-    fetch('/save_image', {
-        method: 'POST',
-        body: JSON.stringify({ image: dataURL }),
-        headers: { 'Content-Type': 'application/json' }
-    }).then(response => {
-        return response.json(); // Odbierz odpowiedź jako JSON
-    }).then(data => {
-        document.getElementById('result').innerText = 
-            `Przewidywana cyfra: ${data.predicted_class}, Pewność: ${data.confidence}%`; // Wyświetl wynik
-    }).catch(error => {
-        console.error('Błąd podczas zapisywania obrazu:', error);
-    });
-});
+section h2 {
+    font-size: 2em;
+    color: #ff9800;
+    margin-bottom: 20px;
+}
 
-// Dodaj funkcjonalność czyszczenia płótna
-document.getElementById('clear').addEventListener('click', () => {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, canvas.width, canvas.height); // Wypełnij białym kolorem
-    document.getElementById('result').innerText = ''; // Wyczyść wynik
-});
+section ul {
+    list-style-type: none;
+    padding: 0;
+}
 
-// Ustawienie tła na białe przy załadowaniu strony
-window.onload = function() {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-};
+section li {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
 
+section li p {
+    color: #bbbbbb;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+strong {
+    font-size: 1.2em;
+    color: #ff9800;
+}
+
+em {
+    color: #bbbbbb;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* -------------------- Drawing Section -------------------- */
+.drawing-section {
+    background-color: #f8f8f8; /* jasne, przyjazne tło */
+    padding: 20px;
+    border-radius: 20px;
+    width: 650px;
+    max-width: 90vw;
+    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Canvas */
+#canvas {
+    border: 2px solid #333;
+    border-radius: 15px;
+    background-color: white;
+    cursor: crosshair;
+    width: 280px;
+    height: 280px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* -------------------- Przyciski -------------------- */
+.button-container {
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    padding: 10px 25px;
+    border-radius: 25px;
+    border: none;
+    background-color: #ff9800;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #e68900;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
+}
+
+/* -------------------- Wynik -------------------- */
+#result {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* -------------------- Responsywność -------------------- */
+@media (max-width: 700px) {
+    .drawing-section {
+        width: 95%;
+        padding: 15px;
+    }
+
+    #canvas {
+        width: 90%;
+        height: auto;
+    }
+
+    .button-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+}
