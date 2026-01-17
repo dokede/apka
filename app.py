@@ -4,7 +4,6 @@ from PIL import Image
 import io
 import base64
 import tensorflow as tf
-from chatbot import chatbot_response
 
 app = Flask(__name__)
 
